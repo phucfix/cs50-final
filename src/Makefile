@@ -1,27 +1,29 @@
-IDIR =../include
-CC=gcc
-CFLAGS=-I$(IDIR)
+# Directories
+IDIR = ../include
+ODIR = obj
+LDIR = ../lib
 
-ODIR=obj
-LDIR =../lib
+# Compiler and flags
+CC = gcc
+CFLAGS = -I$(IDIR)
+LIBS = -lm
 
-LIBS=-lm
+# Automatically find source and header files
+SRC := $(wildcard *.c)
+OBJ := $(patsubst %.c, $(ODIR)/%.o, $(SRC))
+DEPS := $(wildcard $(IDIR)/*.h)
 
-_DEPS = test.h
-DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
-
-_OBJ = game.o
-OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
-
-
-$(ODIR)/%.o: %.c $(DEPS)
-	$(CC) -c -o $@ $< $(CFLAGS)
-
+# Default target
 main: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
-.PHONY: clean
+# Object file build rule
+$(ODIR)/%.o: %.c $(DEPS)
+	@mkdir -p $(ODIR)
+	$(CC) -c -o $@ $< $(CFLAGS)
 
+# Clean up
+.PHONY: clean
 clean:
-	rm -f $(ODIR)/*.o *~ core $(INCDIR)/*~ 
+	rm -f $(ODIR)/*.o main
 

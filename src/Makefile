@@ -6,7 +6,7 @@ LDIR = ../lib
 # Compiler and flags
 CC = gcc
 CFLAGS = -I$(IDIR)
-LIBS = -lm
+LIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 # Automatically find source and header files
 SRC := $(wildcard *.c)

@@ -14,7 +14,7 @@ OBJ := $(patsubst %.c, $(ODIR)/%.o, $(SRC))
 DEPS := $(wildcard $(IDIR)/*.h)
 
 # Default target
-main: $(OBJ)
+game: $(OBJ)
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS)
 
 # Object file build rule

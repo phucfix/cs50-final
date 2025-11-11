@@ -9,19 +9,24 @@ int main(void)
     SetConfigFlags(FLAG_FULLSCREEN_MODE);
     InitWindow(0, 0, "CS50-Final");
 
-    int screenWidth = GetScreenWidth();
-    int screenHeight = GetScreenHeight();
+    const int screenWidth = GetScreenWidth();
+    const int screenHeight = GetScreenHeight();
 
     // Texture loading
-    Texture2D texPlayer = LoadTexture("resources/ken.png");
+    Texture2D texKen = LoadTexture("resources/ken.png");
+    Texture2D texRyu = LoadTexture("resources/ryu.png");
     Texture2D texBackground = LoadTexture("resources/background.png");
 
     // Game require variables
     GameScreen screen = GAMEPLAY;
 
-    Player player = { 0 };
-    player.position = (Vector2) { screenWidth / 2.0f - texPlayer.width / 2.0,  screenHeight - texPlayer.height * 4 - 30};
-    player.speed = (Vector2) { 5.0f, 0.0f };
+    Player ken = { 0 };
+    ken.position = (Vector2) { screenWidth / 2.0f - texKen.width / 2.0,  screenHeight - texKen.height * 4 - 30 };
+    ken.speed = (Vector2) { 5.0f, 0.0f };
+
+    Player ryu = { 0 };
+    ryu.position = (Vector2) { screenWidth / 2.0f - texKen.width / 2.0,  screenHeight - texKen.height * 4 - 30 };
+    ryu.speed = (Vector2) { 5.0f, 0.0f };
 
     // Confirm close
     SetExitKey(KEY_NULL);
@@ -37,24 +42,44 @@ int main(void)
         // Update
         //----------------------------------------------------------------------------------
 
-        // Player movement logic
+        // Ken movement logic
         if (IsKeyDown(KEY_A))
         {
-            player.position.x -= player.speed.x;
+            ken.position.x -= ken.speed.x;
         }
 
         if (IsKeyDown(KEY_D))
         {
-            player.position.x += player.speed.x;
+            ken.position.x += ken.speed.x;
         }
 
-        if (player.position.x <= 0) {
-            player.position.x = 0;
+        if (ken.position.x <= 0) {
+            ken.position.x = 0;
         }
 
-        if (player.position.x + 2 * texPlayer.width >= screenWidth)
+        if (ken.position.x + 4 * texKen.width >= screenWidth)
         {
-            player.position.x = screenWidth - 2 * texPlayer.width;
+            ken.position.x = screenWidth - 4 * texKen.width;
+        }
+
+        // Ryu movement logic
+        if (IsKeyDown(KEY_J))
+        {
+            ryu.position.x -= ryu.speed.x;
+        }
+
+        if (IsKeyDown(KEY_L))
+        {
+            ryu.position.x += ryu.speed.x;
+        }
+
+        if (ryu.position.x <= 0) {
+            ryu.position.x = 0;
+        }
+
+        if (ryu.position.x + 4 * texRyu.width >= screenWidth)
+        {
+            ryu.position.x = screenWidth - 4 * texRyu.width;
         }
         //----------------------------------------------------------------------------------
 
@@ -107,7 +132,8 @@ int main(void)
             }
             else
             {
-                DrawTextureEx(texPlayer, player.position, 0.0f, 4.0f, WHITE);
+                DrawTextureEx(texKen, ken.position, 0.0f, 4.0f, WHITE);
+                DrawTextureEx(texRyu, ryu.position, 0.0f, 4.0f, WHITE);
             }
 
 
@@ -118,7 +144,7 @@ int main(void)
     // De-Initialization
     //--------------------------------------------------------------------------------------
 
-    UnloadTexture(texPlayer);
+    UnloadTexture(texKen);
 
     CloseWindow(); // Close window and OpenGL context
 
